@@ -7,6 +7,8 @@ TagManager:
   - Player 1
   - Player 2
   - Canvas
+  - Projectile
+  - Small Enemy
   layers:
   - Default
   - TransparentFX

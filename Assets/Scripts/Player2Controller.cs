@@ -12,6 +12,7 @@ public class Player2Controller : MonoBehaviour
     private Rigidbody2D rigidBody;
     public GameObject prefab;
     public GameObject canvas;
+    public int speed;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +27,8 @@ public class Player2Controller : MonoBehaviour
         horizontalInputP2 = Input.GetAxis("Horizontal2");
         verticalInputP2 = Input.GetAxis("Vertical2");
 
-        rigidBody.AddForce(Vector3.up * verticalInputP2 * Time.deltaTime * 7000);
-        rigidBody.AddForce(Vector3.right * horizontalInputP2 * Time.deltaTime * 7000);
+        rigidBody.AddForce(Vector3.up * verticalInputP2 * Time.deltaTime * speed, ForceMode2D.Impulse);
+        rigidBody.AddForce(Vector3.right * horizontalInputP2 * Time.deltaTime * speed, ForceMode2D.Impulse);
 
         //Keep player on screen
         //left and right bounds
