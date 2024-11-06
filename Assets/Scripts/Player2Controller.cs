@@ -27,6 +27,7 @@ public class Player2Controller : MonoBehaviour
         horizontalInputP2 = Input.GetAxis("Horizontal2");
         verticalInputP2 = Input.GetAxis("Vertical2");
 
+        //player 2 controls
         rigidBody.AddForce(Vector3.up * verticalInputP2 * Time.deltaTime * speed, ForceMode2D.Impulse);
         rigidBody.AddForce(Vector3.right * horizontalInputP2 * Time.deltaTime * speed, ForceMode2D.Impulse);
 

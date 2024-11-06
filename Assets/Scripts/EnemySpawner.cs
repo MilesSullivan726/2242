@@ -20,6 +20,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //when no enemies remain, increase wave count and spawn new wave
         enemiesLeft = GameObject.FindGameObjectsWithTag("Small Enemy").Length;
         if (enemiesLeft == 0)
         {
@@ -28,12 +29,13 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    //spawn the number of enemies of the wave number at a random range
     void SpawnWave(int enemyCount)
     {
         for (int i = 0; i < enemyCount; i++)
         {
             spawnPos = Random.Range(-48, 48);
-            Debug.Log(spawnPos);
+            
             Instantiate(smallEnemy, new Vector3(spawnPos, transform.position.y, transform.position.z), transform.localRotation, canvas.transform);
         }
     }

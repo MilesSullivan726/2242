@@ -12,11 +12,13 @@ public class PlayerController : MonoBehaviour
     public GameObject prefab;
     public GameObject canvas;
     public int speed;
+    private int playerHP = 3;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        Debug.Log(playerHP);
     }
 
     // Update is called once per frame
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour
         horizontalInputP1 = Input.GetAxis("Horizontal");
         verticalInputP1 = Input.GetAxis("Vertical");
 
-
+        //player 1 controls
         rigidBody.AddForce(Vector3.up * verticalInputP1 * Time.deltaTime * speed, ForceMode2D.Impulse);
         rigidBody.AddForce(Vector3.right * horizontalInputP1 * Time.deltaTime * speed, ForceMode2D.Impulse);
 
@@ -60,5 +62,32 @@ public class PlayerController : MonoBehaviour
             Instantiate(prefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
         }
 
+        if(playerHP <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Small Enemy"))
+        {
+            ChangePlayerHP(-1);
+        }
+    }
+
+    private void ChangePlayerHP(int plusOrMinus)
+    {
+        if(plusOrMinus == -1)
+        {
+            playerHP -= 1;
+            Debug.Log(playerHP);
+        }
+
+        else if(plusOrMinus == 1 && playerHP !> 3)
+        {
+            playerHP += 1;
+            Debug.Log(playerHP);
+        }
     }
 }
