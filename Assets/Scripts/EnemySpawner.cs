@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         //when no enemies remain, increase wave count and spawn new wave
-        enemiesLeft = GameObject.FindGameObjectsWithTag("Small Enemy").Length;
+        enemiesLeft = GameObject.FindGameObjectsWithTag("Enemy").Length;
         if (enemiesLeft == 0)
         {
             waveNumber++;

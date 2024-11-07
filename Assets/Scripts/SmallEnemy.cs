@@ -69,7 +69,8 @@ public class SmallEnemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Projectile"))
-        {           
+        {
+            GameObject.Find("Point Manager").GetComponent<PointManager>().UpdatePoints(100);
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }

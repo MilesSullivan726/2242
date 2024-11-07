@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,11 +15,18 @@ public class PlayerController : MonoBehaviour
     public GameObject canvas;
     public int speed;
     private int playerHP = 3;
+    public TextMeshProUGUI p1LivesText;
+    private bool isInvincible = false;
+    private SpriteRenderer shipFlashing;
+    public GameObject engines;
+    private Image bodyFlashing;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        shipFlashing = engines.gameObject.GetComponent<SpriteRenderer>();
+        bodyFlashing = gameObject.GetComponent<Image>();
         Debug.Log(playerHP);
     }
 
@@ -68,11 +77,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator IFrames()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            shipFlashing.enabled = false;
+            bodyFlashing.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            shipFlashing.enabled = true;
+            bodyFlashing.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+
+        }
+        isInvincible = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Small Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
         {
+            isInvincible = true;
             ChangePlayerHP(-1);
+            StartCoroutine(IFrames());
+        }
+
+        if(collision.gameObject.CompareTag("Life Powerup"))
+        {
+            ChangePlayerHP(1);
         }
     }
 
@@ -81,12 +112,14 @@ public class PlayerController : MonoBehaviour
         if(plusOrMinus == -1)
         {
             playerHP -= 1;
+            p1LivesText.text = "P1: " + playerHP;
             Debug.Log(playerHP);
         }
 
-        else if(plusOrMinus == 1 && playerHP !> 3)
+        else if(plusOrMinus == 1 && playerHP != 3)
         {
             playerHP += 1;
+            p1LivesText.text = "P1: " + playerHP;
             Debug.Log(playerHP);
         }
     }

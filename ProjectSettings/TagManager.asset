@@ -9,6 +9,8 @@ TagManager:
   - Canvas
   - Projectile
   - Small Enemy
+  - Life Powerup
+  - Enemy
   layers:
   - Default
   - TransparentFX
