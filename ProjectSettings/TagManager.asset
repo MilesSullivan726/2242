@@ -11,6 +11,9 @@ TagManager:
   - Small Enemy
   - Life Powerup
   - Enemy
+  - Enemy Projectile
+  - 2x
+  - 4x
   layers:
   - Default
   - TransparentFX

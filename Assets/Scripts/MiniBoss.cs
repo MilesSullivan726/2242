@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SmallEnemy : MonoBehaviour
+public class MiniBoss : MonoBehaviour
 {
 
     private Rigidbody2D rigidBody;
@@ -10,14 +11,21 @@ public class SmallEnemy : MonoBehaviour
     public int turnSpeed;
     private bool hasReachedBottom = false;
     private int direction;
+    private int health = 3;
+    private Image flash;
+    public GameObject projectile;
+    private GameObject canvas;
 
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         //randomly choose to move left or right
         direction = Random.Range(0, 2);
-        
+        flash = gameObject.GetComponent<Image>();
+        InvokeRepeating("SpawnProjectile", 0, 1);
+
     }
 
     // Update is called once per frame
@@ -31,18 +39,18 @@ public class SmallEnemy : MonoBehaviour
             if (direction == 0 && transform.localPosition.x < 194)
             {
                 rigidBody.AddForce(Vector3.right * Time.deltaTime * turnSpeed, ForceMode2D.Impulse);
-                
+
             }
             //if enemy hits right border, change direction to left
-            else if(direction == 0 && transform.localPosition.x > 194)
+            else if (direction == 0 && transform.localPosition.x > 194)
             {
                 direction = 1;
             }
 
-            if(direction == 1 && transform.localPosition.x > -194)
+            if (direction == 1 && transform.localPosition.x > -194)
             {
                 rigidBody.AddForce(Vector3.left * Time.deltaTime * turnSpeed, ForceMode2D.Impulse);
-               
+
             }
             //if enemy hits left border, change direction to right
             else if (direction == 1 && transform.localPosition.x < -194)
@@ -52,14 +60,14 @@ public class SmallEnemy : MonoBehaviour
         }
 
         //if the enemy reaches the bottom, move back up
-        if(transform.localPosition.y < -216 || hasReachedBottom == true)
+        if (transform.localPosition.y < -216 || hasReachedBottom == true)
         {
             hasReachedBottom = true;
             rigidBody.AddForce(Vector3.up * Time.deltaTime * speed, ForceMode2D.Impulse);
         }
 
         //if the enemy reaches the bottom and moves all the way back up without being destroyed, destroy it
-        if(transform.localPosition.y > 260)
+        if (transform.localPosition.y > 280)
         {
             Destroy(gameObject);
         }
@@ -70,9 +78,15 @@ public class SmallEnemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            GameObject.Find("Point Manager").GetComponent<PointManager>().UpdatePoints(100);
-            Destroy(gameObject);
+            health -= 1;
             Destroy(collision.gameObject);
+            StartCoroutine(FlashOnHit());
+            if (health <= 0)
+            {
+                GameObject.Find("Point Manager").GetComponent<PointManager>().UpdatePoints(300);
+                Destroy(gameObject);
+                Destroy(collision.gameObject);
+            }
         }
         /*
         else if (collision.gameObject.CompareTag("Player 1") || collision.gameObject.CompareTag("Player 2"))
@@ -81,4 +95,15 @@ public class SmallEnemy : MonoBehaviour
         }*/
     }
 
+    private void SpawnProjectile()
+    {
+        Instantiate(projectile, new Vector3(transform.position.x, transform.position.y - 10, transform.position.z), Quaternion.Euler(0f, 0f, 180f), canvas.transform);
+    }
+
+    IEnumerator FlashOnHit()
+    {
+        flash.enabled = true;
+        yield return new WaitForSeconds(0.1f);
+        flash.enabled = false;
+    }
 }

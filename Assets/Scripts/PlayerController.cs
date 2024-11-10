@@ -11,15 +11,19 @@ public class PlayerController : MonoBehaviour
     private float verticalInputP1;
     private float lastShot = 0;
     private Rigidbody2D rigidBody;
-    public GameObject prefab;
+    public GameObject projectile;
     public GameObject canvas;
     public int speed;
-    private int playerHP = 3;
+    private int playerHP = 30;
     public TextMeshProUGUI p1LivesText;
     private bool isInvincible = false;
     private SpriteRenderer shipFlashing;
     public GameObject engines;
     private Image bodyFlashing;
+    public GameObject twoX;
+    public GameObject fourX;
+    private bool hasTwoX = false;
+    private bool hasFourX = false;
 
     // Start is called before the first frame update
     void Start()
@@ -67,8 +71,23 @@ public class PlayerController : MonoBehaviour
         //fire projectile
         if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastShot >= 0.1f)
         {
-            lastShot = Time.time;
-            Instantiate(prefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            if (hasTwoX)
+            {
+                lastShot = Time.time;
+                Instantiate(twoX, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else if (hasFourX)
+            {
+                lastShot = Time.time;
+                Instantiate(fourX, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else
+            {
+                lastShot = Time.time;
+                Instantiate(projectile, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
         }
 
         if(playerHP <= 0)
@@ -94,8 +113,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
+        if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Enemy Projectile")) && !isInvincible)
         {
+            hasTwoX = false;
+            hasFourX = false;
             isInvincible = true;
             ChangePlayerHP(-1);
             StartCoroutine(IFrames());
@@ -105,6 +126,16 @@ public class PlayerController : MonoBehaviour
         {
             ChangePlayerHP(1);
         }
+
+        if (collision.gameObject.CompareTag("2x"))
+        {
+            hasTwoX = true;
+        }
+
+        if (collision.gameObject.CompareTag("4x"))
+        {
+            hasFourX = true;
+        }
     }
 
     private void ChangePlayerHP(int plusOrMinus)
@@ -113,14 +144,12 @@ public class PlayerController : MonoBehaviour
         {
             playerHP -= 1;
             p1LivesText.text = "P1: " + playerHP;
-            Debug.Log(playerHP);
         }
 
         else if(plusOrMinus == 1 && playerHP != 3)
         {
             playerHP += 1;
             p1LivesText.text = "P1: " + playerHP;
-            Debug.Log(playerHP);
         }
     }
 }

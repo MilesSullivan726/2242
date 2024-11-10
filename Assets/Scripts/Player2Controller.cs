@@ -84,7 +84,6 @@ public class Player2Controller : MonoBehaviour
 
         }
         isInvincible = false;
-        Debug.Log("iframes over");
     }
 
     IEnumerator DamagedFlash()
@@ -97,12 +96,11 @@ public class Player2Controller : MonoBehaviour
             shipFlashing.enabled = true;
 
         }
-        Debug.Log("flashing over");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
+        if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Enemy Projectile")) && !isInvincible)
         {
             isInvincible = true;
             ChangePlayerHP(-1);
@@ -122,14 +120,12 @@ public class Player2Controller : MonoBehaviour
         {
             playerHP -= 1;
             p2LivesText.text = "P2: " + playerHP;
-            Debug.Log(playerHP);
         }
 
         else if (plusOrMinus == 1 && playerHP != 3)
         {
             playerHP += 1;
             p2LivesText.text = "P2: " + playerHP;
-            Debug.Log(playerHP);
         }
     }
 }

@@ -976,11 +976,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2aeaef40e8dfcf4ab9b0933a962185a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7742187364637073878, guid: 05a8c6fff0b79c8478df9ff2d5a6ccf6, type: 3}
+  projectile: {fileID: 7742187364637073878, guid: 05a8c6fff0b79c8478df9ff2d5a6ccf6, type: 3}
   canvas: {fileID: 1388584635}
   speed: 1000
   p1LivesText: {fileID: 1401450526}
   engines: {fileID: 1024481087}
+  twoX: {fileID: 3033855128382010543, guid: 50925f2aa84d3ec4ab6f1315f166bf89, type: 3}
+  fourX: {fileID: 6094344512657328335, guid: 5fe701da8fca06e43ab3984288c40eff, type: 3}
 --- !u!50 &995162991
 Rigidbody2D:
   serializedVersion: 4
@@ -2045,6 +2047,7 @@ MonoBehaviour:
   smallEnemy: {fileID: 2070872416699004773, guid: 611d482f9cf077a4784037e92dae9c68, type: 3}
   canvas: {fileID: 1388584635}
   miniBoss: {fileID: 7024352554181108021, guid: 6b6978c542890d54da04e36174a475f8, type: 3}
+  bigBoss: {fileID: 780418257983447166, guid: d39d63623a3362942967104ba6039dc1, type: 3}
 --- !u!1 &1670895207
 GameObject:
   m_ObjectHideFlags: 0
