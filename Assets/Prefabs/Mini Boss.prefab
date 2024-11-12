@@ -138,6 +138,7 @@ MonoBehaviour:
   speed: 250
   turnSpeed: 500
   projectile: {fileID: 270276774677097755, guid: 6cf4b0090261adb49897e0e7f46bf85c, type: 3}
+  explosion: {fileID: 7322821600696165262, guid: 857bc0e1efe38f94bb95e0e8f7adf274, type: 3}
 --- !u!58 &7487292932952024554
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -11,19 +11,33 @@ public class Player2Controller : MonoBehaviour
     private float verticalInputP2;
     private float lastShot = 0;
     private Rigidbody2D rigidBody;
-    public GameObject prefab;
+    public GameObject projectile;
     public GameObject canvas;
     public int speed;
     private int playerHP = 3;
     public TextMeshProUGUI p2LivesText;
     private bool isInvincible = false;
     private SpriteRenderer shipFlashing;
+    public GameObject explosion;
+    public GameObject twoX;
+    public GameObject fourX;
+    private bool hasTwoX = false;
+    private bool hasFourX = false;
+    public int finalPoints;
+    public TextMeshProUGUI pointsText;
+    public GameObject gameManager;
+    public GameObject gameOverScreen;
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         shipFlashing = gameObject.GetComponent<SpriteRenderer>();
+
+
     }
 
     // Update is called once per frame
@@ -63,15 +77,40 @@ public class Player2Controller : MonoBehaviour
         //fire projectile
         if ((Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4)) && Time.time - lastShot >= 0.1f)
         {
-            lastShot = Time.time;
-            Instantiate(prefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayProjectile();
+
+            if (hasFourX)
+            {
+                lastShot = Time.time;
+                Instantiate(fourX, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else if (hasTwoX)
+            {
+                lastShot = Time.time;
+                Instantiate(twoX, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else
+            {
+                lastShot = Time.time;
+                Instantiate(projectile, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), transform.localRotation, canvas.transform);
+            }
         }
 
         if (playerHP <= 0)
         {
+            finalPoints = GameObject.Find("Point Manager").GetComponent<PointManager>().totalPoints;
+            pointsText.text = finalPoints.ToString();
+            gameManager.GetComponent<GameManager>().GameOver();
+            Instantiate(explosion, transform.position, transform.localRotation);
+            gameOverScreen.SetActive(true);
+            Time.timeScale = 0;
             Destroy(gameObject);
         }
     }
+
+
 
     IEnumerator IFrames()
     {
@@ -102,6 +141,9 @@ public class Player2Controller : MonoBehaviour
     {
         if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Enemy Projectile")) && !isInvincible)
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayHurtSFX();
+            hasTwoX = false;
+            hasFourX = false;
             isInvincible = true;
             ChangePlayerHP(-1);
             StartCoroutine(IFrames());
@@ -110,7 +152,20 @@ public class Player2Controller : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Life Powerup"))
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayPowerUp();
             ChangePlayerHP(1);
+        }
+
+        if (collision.gameObject.CompareTag("2x") && !hasFourX)
+        {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayPowerUp();
+            hasTwoX = true;
+        }
+
+        if (collision.gameObject.CompareTag("4x"))
+        {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayPowerUp();
+            hasFourX = true;
         }
     }
 

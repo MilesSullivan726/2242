@@ -15,6 +15,7 @@ public class MiniBoss : MonoBehaviour
     private Image flash;
     public GameObject projectile;
     private GameObject canvas;
+    public GameObject explosion;
 
     // Start is called before the first frame update
     void Start()
@@ -78,11 +79,13 @@ public class MiniBoss : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayHurtSFX();
             health -= 1;
             Destroy(collision.gameObject);
             StartCoroutine(FlashOnHit());
             if (health <= 0)
             {
+                Instantiate(explosion, transform.position, transform.localRotation);
                 GameObject.Find("Point Manager").GetComponent<PointManager>().UpdatePoints(300);
                 Destroy(gameObject);
                 Destroy(collision.gameObject);
@@ -97,6 +100,8 @@ public class MiniBoss : MonoBehaviour
 
     private void SpawnProjectile()
     {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().PlayProjectile();
+
         Instantiate(projectile, new Vector3(transform.position.x, transform.position.y - 10, transform.position.z), Quaternion.Euler(0f, 0f, 180f), canvas.transform);
     }
 

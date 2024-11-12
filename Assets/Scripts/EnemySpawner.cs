@@ -13,6 +13,10 @@ public class EnemySpawner : MonoBehaviour
     public GameObject miniBoss;
     private int miniBossNum;
     public GameObject bigBoss;
+    public GameObject lifePowerup;
+    public GameObject twoXPowerup;
+    public GameObject fourXPowerup;
+    private int powerupToSpawn;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,36 @@ public class EnemySpawner : MonoBehaviour
             SpawnWave(waveNumber);
             SpawnMiniBosses(waveNumber);
             SpawnBigBosses(waveNumber);
+            SpawnPowerUp(waveNumber);
+        }
+    }
+
+    void SpawnPowerUp(int waveNumber)
+    {
+        if(waveNumber % 2 == 0)
+        {
+            powerupToSpawn = Random.Range(0, 4);
+
+            if(powerupToSpawn <= 1)
+            {
+                spawnPos = Random.Range(-48, 48);
+
+                Instantiate(lifePowerup, new Vector3(spawnPos, transform.position.y, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else if (powerupToSpawn == 2)
+            {
+                spawnPos = Random.Range(-48, 48);
+
+                Instantiate(twoXPowerup, new Vector3(spawnPos, transform.position.y, transform.position.z), transform.localRotation, canvas.transform);
+            }
+
+            else if (powerupToSpawn == 3)
+            {
+                spawnPos = Random.Range(-48, 48);
+
+                Instantiate(fourXPowerup, new Vector3(spawnPos, transform.position.y, transform.position.z), transform.localRotation, canvas.transform);
+            }
         }
     }
 

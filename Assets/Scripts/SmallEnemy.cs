@@ -10,6 +10,7 @@ public class SmallEnemy : MonoBehaviour
     public int turnSpeed;
     private bool hasReachedBottom = false;
     private int direction;
+    public GameObject explosion;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +71,7 @@ public class SmallEnemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
+            Instantiate(explosion, transform.position, transform.localRotation);
             GameObject.Find("Point Manager").GetComponent<PointManager>().UpdatePoints(100);
             Destroy(gameObject);
             Destroy(collision.gameObject);

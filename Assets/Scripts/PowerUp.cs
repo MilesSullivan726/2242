@@ -18,6 +18,11 @@ public class PowerUp : MonoBehaviour
     void Update()
     {
         rigidBody.AddForce(Vector3.down * Time.deltaTime * speed, ForceMode2D.Impulse);
+
+        if(transform.localPosition.y < -250)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
