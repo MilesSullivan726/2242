@@ -28,4 +28,5 @@ Credits:
 - In-Game music by David Fesliyan: https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6
 - Sound Effects:  https://sfbgames.itch.io/chiptone
 - Game Over Music: https://tunetank.com/sound/26208-arcade-game-retro-8-bit-you-fail/
-- Title Screen Music: To be added
+- Title Screen Music: https://pixabay.com/music/video-games-space-station-247790/
+
